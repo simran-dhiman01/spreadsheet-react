@@ -47,7 +47,7 @@ const Topbar: React.FC = () => {
                         placeholder="Search within sheet"
                         className="text-xs tracking-normal leading-[16px] font-normal text-[#757575] placeholder:text-[#757575] placeholder:font-normal placeholder:text-xs bg-transparent outline-none w-full"
                         onClick={() => {
-                            alert('Enter something.')
+                            alert('You clicked searchbar.')
                             console.log('SearchBar Clicked')
                         }} />
                 </div>

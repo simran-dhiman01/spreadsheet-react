@@ -292,6 +292,33 @@ const TableComponent: React.FC = () => {
                             </tr>
                         ))}
 
+ {/* Empty datas */}
+                        {emptyrows.map((_, idx) => (
+                            <tr key={`empty-${idx}`}>
+                                <td className="border border-gray-100 py-2 text-[#757575] w-[37px] font-normal text-sm align-middle text-center box-border">{jobdata.length + idx + 1}</td>
+                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-1` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-1`)}></td>
+                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-2` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-2`)}></td>
+                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-3` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-3`)}></td>
+                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-4` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-4`)}></td>
+                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-5` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-5`)}></td>
+                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-6` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-6`)}></td>
+                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-7` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-7`)}></td>
+                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-8` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-8`)}></td>
+                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-9` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-9`)}></td>
+                                <td className={`bg-white w-[153px] box-border border-l-2 border-r-2 border-t border-b mr-3
+                                ${active === `empty-${idx}-10` ? " border border-green-800" : "border-l-gray-200 border-r-gray-200 border-t-gray-100 border-b-gray-100"}`}
+                                    style={{
+                                        borderLeftStyle: 'dashed',
+                                        borderRightStyle: 'dashed',
+                                        borderTopStyle: 'solid',
+                                        borderBottomStyle: 'solid',
+                                    }}
+                                    onClick={() => setActive(`empty-${idx}-10`)}>
+
+                                </td>
+                            </tr>
+                        ))}
+                        
                        
                     </tbody>
 

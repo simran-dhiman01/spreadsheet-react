@@ -1,4 +1,5 @@
 import React from "react";
+import profile from '../assets/profile.png';
 
 const Topbar: React.FC = () => {
 
@@ -75,7 +76,7 @@ const Topbar: React.FC = () => {
                 <div className="flex  h-[40px] items-center gap-2 bg-white rounded-[8px] py-1.5 px-3">
                     {/* Profile Picture */}
                     <div>
-                        <img src="/profile.png" alt="Profile photo" className="w-7 cursor-pointer h-7 rounded-full"
+                        <img src={profile} alt="Profile photo" className="w-7 cursor-pointer h-7 rounded-full"
                             onClick={() => console.log('Profile Photo clicked')} />
                     </div>
                     {/* Profile Name */}

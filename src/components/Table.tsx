@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-//import { jobdata, } from "../data/data";
+import { jobdata, } from "../data/data";
 import { AssignedIcon, FirstIcon, JobIcon, StatusIcon, SubmittedIcon, SubmitterIcon, UrlIcon } from "../data/icons";
 
 
 const TableComponent: React.FC = () => {
-    
+
+    const emptyrows = Array.from({ length: 70 });
+    const [active, setActive] = useState("");
 
     const handleClick = (label: string) => {
         console.log(`${label} triggered`)
@@ -197,7 +199,102 @@ const TableComponent: React.FC = () => {
                         </tr>
                     </thead>
 
-                   
+                    {/* Populated datas */}
+                    <tbody className="cursor-pointer bg-white">
+                        {jobdata.map((data, index) => (
+                            <tr key={index}>
+                                <td className="text-[#757575] font-normal font-sm leading-5 align-middle text-center w-[37px] border box-border border-gray-100">{index + 1}</td>
+                                <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212]
+                                ${active === `cell-${index}-job` ? " border border-green-800" : "border border-gray-100"}`}
+                                    onClick={() => setActive(`cell-${index}-job`)}>
+                                    <span className="block w-[235px] truncate">
+                                        {data.jobRequest}
+                                    </span>
+                                </td>
+
+                                <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212] text-right
+                                ${active === `cell-${index}-date` ? " border border-green-800" : "border border-gray-100"}`}
+                                    onClick={() => setActive(`cell-${index}-date`)}>
+                                    <span>{data.submittedDate}</span>
+                                </td>
+
+                                <td className={`py-2 px-3 font-medium text-[13px] h-8 leading-4 text-center 
+                                     ${active === `cell-${index}-status` ? " border border-green-800" : "border border-gray-100"}`}
+                                    onClick={() => setActive(`cell-${index}-status`)}>
+                                    <span className={`py-1 px-2 rounded-full
+                                    ${data.status === "In-process"
+                                            ? "bg-[#FFF3D6] text-[#85640B]" : data.status === "Need to start"
+                                                ? "bg-[#E2E8F0] text-[#475569]" : data.status === "Complete"
+                                                    ? "bg-[#D3F2E3] text-[#0A6E3D]" : "bg-[#FFE1DE] text-[#C22219]"
+                                        }`}>
+                                        {data.status}
+                                    </span>
+                                </td>
+                                <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212]
+                                 ${active === `cell-${index}-submitter` ? " border border-green-800" : "border border-gray-100"}`}
+                                    onClick={() => setActive(`cell-${index}-submitter`)}>
+                                    <span>{data.submitter}</span>
+                                </td>
+
+                                <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212]
+                                ${active === `cell-${index}-url` ? " border border-green-800" : "border border-gray-100"}`}
+                                    onClick={() => setActive(`cell-${index}-url`)}>
+                                    <span className="block w-[120px] truncate underline decoration-solid">
+                                        {data.url}
+                                    </span>
+                                </td>
+
+                                <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212] 
+                                ${active === `cell-${index}-assigned` ? " border border-green-800" : "border border-gray-100"}`}
+                                    onClick={() => setActive(`cell-${index}-assigned`)}>
+                                    <span>{data.assigned}</span>
+                                </td>
+
+                                <td className={`py-2 px-3 font-semibold text-[13px] h-8 leading-4 text-center 
+                                ${active === `cell-${index}-priority` ? " border border-green-800" : "border border-gray-100"}`}
+                                    onClick={() => setActive(`cell-${index}-priority`)}>
+                                    <span className={`${data.priority === "Low"
+                                        ? "text-[#1A8CFF]" : data.priority === "Medium"
+                                            ? "text-[#C29210]" : "text-[#EF4D44]"
+                                        }`}>
+                                        {data.priority}
+                                    </span>
+                                </td>
+
+                                <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212] text-right 
+                               ${active === `cell-${index}-duedate` ? " border border-green-800" : "border border-gray-100"} `}
+                                    onClick={() => setActive(`cell-${index}-duedate`)
+                                    }>
+                                    <span>{data.dueDate}</span>
+                                </td>
+
+                                <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212] text-right
+                                ${active === `cell-${index}-estvalue` ? " border border-green-800" : "border border-gray-100"}`}
+                                    onClick={() => setActive(`cell-${index}-estvalue`)}>
+                                    <div className="flex items-center gap-1 justify-end">
+                                        <span>{data.estimatedValue}</span>
+                                        <svg width="9" height="9" viewBox="0 0 7 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.59653 8L0.768531 5.012V4.04H2.86853C3.29253 4.04 3.63253 3.948 3.88853 3.764C4.15253 3.58 4.32053 3.312 4.39253 2.96H0.768531V2.06H4.39253C4.32053 1.708 4.15253 1.444 3.88853 1.268C3.63253 1.084 3.29253 0.991999 2.86853 0.991999L0.768531 0.98V0.0799997H6.62453V1.004L4.71653 0.991999C4.90053 1.064 5.05253 1.196 5.17253 1.388C5.30053 1.58 5.38853 1.804 5.43653 2.06H6.62453V2.96H5.44853C5.40053 3.328 5.26853 3.656 5.05253 3.944C4.84453 4.232 4.57253 4.46 4.23653 4.628C3.90053 4.796 3.50853 4.884 3.06053 4.892H2.26853L6.37253 8H4.59653Z" fill="#AFAFAF" />
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td className={`bg-white w-[153px] border-l-2 border-r-2 border-t border-b box-border mr-3 
+                                ${active === `cell-${index}-empty` ? " border border-green-800" : "border-l-gray-200 border-r-gray-200 border-t-gray-100 border-b-gray-100"}`}
+                                    style={{
+                                        borderLeftStyle: 'dashed',
+                                        borderRightStyle: 'dashed',
+                                        borderTopStyle: 'solid',
+                                        borderBottomStyle: 'solid',
+                                    }}
+                                    onClick={() => setActive(`cell-${index}-empty`)}>
+
+                                </td>
+                            </tr>
+                        ))}
+
+                       
+                    </tbody>
+
                 </table>
             </div>
 

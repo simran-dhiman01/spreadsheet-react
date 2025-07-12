@@ -1,7 +1,7 @@
 
 import './App.css'
 import Topbar from './components/TopBar'
-// import FooterRow from './components/FooterRow'
+import FooterRow from './components/FooterRow'
 import Row from './components/Row'
 import Table from './components/Table'
 
@@ -15,7 +15,7 @@ function App() {
         <Topbar />
         <Row />
         <Table />
-        {/* <FooterRow/> */}
+        <FooterRow/>
       </div>
     </>
   )

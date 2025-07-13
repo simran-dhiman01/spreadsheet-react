@@ -23,6 +23,7 @@ An interactive spreadsheet-like UI built with **React**, **TypeScript**, and **T
 
 ## ✨ Features
 - The UI is not dead. Every button/cell/heading changes its state or log something.
+- Arrow key navigation between cells.
 - Sticky table headers for better readability on scroll
 - Clickable cells with dynamic border highlight on selection
 - Structured code using TypeScript and reusable components

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { jobdata, } from "../data/data";
 import { AssignedIcon, FirstIcon, JobIcon, StatusIcon, SubmittedIcon, SubmitterIcon, UrlIcon } from "../data/icons";
 
@@ -6,11 +6,33 @@ import { AssignedIcon, FirstIcon, JobIcon, StatusIcon, SubmittedIcon, SubmitterI
 const TableComponent: React.FC = () => {
 
     const emptyrows = Array.from({ length: 70 });
-    const [active, setActive] = useState("");
+    const [active, setActive] = useState({ row: 0, col: 0 });
 
     const handleClick = (label: string) => {
         console.log(`${label} triggered`)
     }
+    const maxColIndex = 9;
+
+    useEffect(() => {
+        const handleKeyChange = (e: KeyboardEvent) => {
+            if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) return;
+
+            setActive((prev) => {
+                const { row, col } = prev;
+                const newRow = e.key === "ArrowUp" ? Math.max(row - 1, 0) :
+                    e.key === "ArrowDown" ? Math.min(row + 1, jobdata.length + emptyrows.length - 1) : row;
+
+                const newCol = e.key === "ArrowLeft" ? Math.max(col - 1, 0) :
+                    e.key === "ArrowRight" ? Math.min(col + 1, maxColIndex) : col;
+
+                return { row: newRow, col: newCol };
+            });
+        };
+
+        window.addEventListener("keydown", handleKeyChange);
+        return () => window.removeEventListener("keydown", handleKeyChange);
+    }, [jobdata.length, emptyrows.length, maxColIndex]);
+
 
     return (
         <div className="w-full relative h-[600px] overflow-auto scrollbar-hide bg-[#F6F6F6]" >
@@ -201,26 +223,44 @@ const TableComponent: React.FC = () => {
 
                     {/* Populated datas */}
                     <tbody className="cursor-pointer bg-white">
-                        {jobdata.map((data, index) => (
-                            <tr key={index}>
-                                <td className="text-[#757575] font-normal font-sm leading-5 align-middle text-center w-[37px] border box-border border-gray-100">{index + 1}</td>
+                        {jobdata.map((data, rowindex) => (
+                            <tr key={rowindex}>
+                                <td className="text-[#757575] font-normal font-sm leading-5 align-middle text-center w-[37px] border box-border border-gray-100">{rowindex + 1}</td>
                                 <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212]
-                                ${active === `cell-${index}-job` ? " border border-green-800" : "border border-gray-100"}`}
-                                    onClick={() => setActive(`cell-${index}-job`)}>
+                                ${active.row === rowindex && active.col === 0
+                                        ? "border border-green-800"
+                                        : "border border-gray-100"}`}
+
+                                    onClick={() => {
+                                        setActive({ row: rowindex, col: 0 })
+                                        console.log(` Row : ${rowindex + 1} and Col : 1 clicked `)
+                                    }}>
                                     <span className="block w-[235px] truncate">
                                         {data.jobRequest}
                                     </span>
                                 </td>
 
                                 <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212] text-right
-                                ${active === `cell-${index}-date` ? " border border-green-800" : "border border-gray-100"}`}
-                                    onClick={() => setActive(`cell-${index}-date`)}>
+                                ${active.row === rowindex && active.col === 1
+                                        ? "border border-green-800"
+                                        : "border border-gray-100"}`}
+
+                                    onClick={() => {
+                                        setActive({ row: rowindex, col: 1 })
+                                        console.log(` Row : ${rowindex + 1} and Col : 2 clicked `)
+                                    }}>
                                     <span>{data.submittedDate}</span>
                                 </td>
 
                                 <td className={`py-2 px-3 font-medium text-[13px] h-8 leading-4 text-center 
-                                     ${active === `cell-${index}-status` ? " border border-green-800" : "border border-gray-100"}`}
-                                    onClick={() => setActive(`cell-${index}-status`)}>
+                                    ${active.row === rowindex && active.col === 2
+                                        ? "border border-green-800"
+                                        : "border border-gray-100"}`}
+
+                                    onClick={() => {
+                                        setActive({ row: rowindex, col: 2 })
+                                        console.log(` Row : ${rowindex + 1} and Col : 3 clicked `)
+                                    }}>
                                     <span className={`py-1 px-2 rounded-full
                                     ${data.status === "In-process"
                                             ? "bg-[#FFF3D6] text-[#85640B]" : data.status === "Need to start"
@@ -230,29 +270,53 @@ const TableComponent: React.FC = () => {
                                         {data.status}
                                     </span>
                                 </td>
+
                                 <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212]
-                                 ${active === `cell-${index}-submitter` ? " border border-green-800" : "border border-gray-100"}`}
-                                    onClick={() => setActive(`cell-${index}-submitter`)}>
+                                 ${active.row === rowindex && active.col === 3
+                                        ? "border border-green-800"
+                                        : "border border-gray-100"}`}
+
+                                    onClick={() => {
+                                        setActive({ row: rowindex, col: 3 })
+                                        console.log(` Row : ${rowindex + 1} and Col : 4 clicked `)
+                                    }}>
                                     <span>{data.submitter}</span>
                                 </td>
 
                                 <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212]
-                                ${active === `cell-${index}-url` ? " border border-green-800" : "border border-gray-100"}`}
-                                    onClick={() => setActive(`cell-${index}-url`)}>
+                                ${active.row === rowindex && active.col === 4
+                                        ? "border border-green-800"
+                                        : "border border-gray-100"}`}
+
+                                    onClick={() => {
+                                        setActive({ row: rowindex, col: 4 })
+                                        console.log(` Row : ${rowindex + 1} and Col : 5 clicked `)
+                                    }}>
                                     <span className="block w-[120px] truncate underline decoration-solid">
                                         {data.url}
                                     </span>
                                 </td>
 
                                 <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212] 
-                                ${active === `cell-${index}-assigned` ? " border border-green-800" : "border border-gray-100"}`}
-                                    onClick={() => setActive(`cell-${index}-assigned`)}>
+                                ${active.row === rowindex && active.col === 5
+                                        ? "border border-green-800"
+                                        : "border border-gray-100"}`}
+
+                                    onClick={() => {
+                                        setActive({ row: rowindex, col: 5 })
+                                        console.log(` Row : ${rowindex + 1} and Col : 6 clicked `)
+                                    }}>
                                     <span>{data.assigned}</span>
                                 </td>
 
                                 <td className={`py-2 px-3 font-semibold text-[13px] h-8 leading-4 text-center 
-                                ${active === `cell-${index}-priority` ? " border border-green-800" : "border border-gray-100"}`}
-                                    onClick={() => setActive(`cell-${index}-priority`)}>
+                               ${active.row === rowindex && active.col === 6
+                                        ? "border border-green-800"
+                                        : "border border-gray-100"}`}
+                                    onClick={() => {
+                                        setActive({ row: rowindex, col: 6 })
+                                        console.log(` Row : ${rowindex + 1} and Col : 7 clicked `)
+                                    }}>
                                     <span className={`${data.priority === "Low"
                                         ? "text-[#1A8CFF]" : data.priority === "Medium"
                                             ? "text-[#C29210]" : "text-[#EF4D44]"
@@ -262,15 +326,26 @@ const TableComponent: React.FC = () => {
                                 </td>
 
                                 <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212] text-right 
-                               ${active === `cell-${index}-duedate` ? " border border-green-800" : "border border-gray-100"} `}
-                                    onClick={() => setActive(`cell-${index}-duedate`)
-                                    }>
+                               ${active.row === rowindex && active.col === 7
+                                        ? "border border-green-800"
+                                        : "border border-gray-100"}`}
+
+                                    onClick={() => {
+                                        setActive({ row: rowindex, col: 7 })
+                                        console.log(` Row : ${rowindex + 1} and Col : 8 clicked `)
+                                    }}>
                                     <span>{data.dueDate}</span>
                                 </td>
 
                                 <td className={`py-2 px-3 font-normal text-[13px] h-8 leading-4 text-[#121212] text-right
-                                ${active === `cell-${index}-estvalue` ? " border border-green-800" : "border border-gray-100"}`}
-                                    onClick={() => setActive(`cell-${index}-estvalue`)}>
+                               ${active.row === rowindex && active.col === 8
+                                        ? "border border-green-800"
+                                        : "border border-gray-100"}`}
+
+                                    onClick={() => {
+                                        setActive({ row: rowindex, col: 8 })
+                                        console.log(` Row : ${rowindex + 1} and Col : 9 clicked `)
+                                    }}>
                                     <div className="flex items-center gap-1 justify-end">
                                         <span>{data.estimatedValue}</span>
                                         <svg width="9" height="9" viewBox="0 0 7 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -278,48 +353,71 @@ const TableComponent: React.FC = () => {
                                         </svg>
                                     </div>
                                 </td>
+
                                 <td className={`bg-white w-[153px] border-l-2 border-r-2 border-t border-b box-border mr-3 
-                                ${active === `cell-${index}-empty` ? " border border-green-800" : "border-l-gray-200 border-r-gray-200 border-t-gray-100 border-b-gray-100"}`}
+                                ${active.row === rowindex && active.col === 9 ? " border border-green-800" : "border-l-gray-200 border-r-gray-200 border-t-gray-100 border-b-gray-100"}`}
                                     style={{
                                         borderLeftStyle: 'dashed',
                                         borderRightStyle: 'dashed',
                                         borderTopStyle: 'solid',
                                         borderBottomStyle: 'solid',
                                     }}
-                                    onClick={() => setActive(`cell-${index}-empty`)}>
+                                    onClick={() => {
+                                        setActive({ row: rowindex, col: 9 })
+                                        console.log(` Row : ${rowindex + 1} and Col : 10 clicked `)
+                                    }}>
 
                                 </td>
+
                             </tr>
                         ))}
 
- {/* Empty datas */}
-                        {emptyrows.map((_, idx) => (
-                            <tr key={`empty-${idx}`}>
-                                <td className="border border-gray-100 py-2 text-[#757575] w-[37px] font-normal text-sm align-middle text-center box-border">{jobdata.length + idx + 1}</td>
-                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-1` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-1`)}></td>
-                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-2` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-2`)}></td>
-                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-3` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-3`)}></td>
-                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-4` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-4`)}></td>
-                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-5` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-5`)}></td>
-                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-6` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-6`)}></td>
-                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-7` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-7`)}></td>
-                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-8` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-8`)}></td>
-                                <td className={` box-border px-4 py-2 ${active === `empty-${idx}-9` ? " border border-green-800" : "border border-gray-100"}`} onClick={() => setActive(`empty-${idx}-9`)}></td>
-                                <td className={`bg-white w-[153px] box-border border-l-2 border-r-2 border-t border-b mr-3
-                                ${active === `empty-${idx}-10` ? " border border-green-800" : "border-l-gray-200 border-r-gray-200 border-t-gray-100 border-b-gray-100"}`}
-                                    style={{
-                                        borderLeftStyle: 'dashed',
-                                        borderRightStyle: 'dashed',
-                                        borderTopStyle: 'solid',
-                                        borderBottomStyle: 'solid',
-                                    }}
-                                    onClick={() => setActive(`empty-${idx}-10`)}>
 
-                                </td>
-                            </tr>
-                        ))}
-                        
-                       
+
+                        {emptyrows.map((_, idx) => {
+                            const rowIndex = jobdata.length + idx;
+
+                            return (
+                                <tr key={`empty-${idx}`}>
+                                    <td className="border border-gray-100 py-2 text-[#757575] w-[37px] font-normal text-sm align-middle text-center box-border">
+                                        {rowIndex + 1}
+                                    </td>
+
+                                    {[...Array(9)].map((_, colIndex) => (
+
+                                        <td
+                                            key={colIndex}
+                                            className={`box-border px-4 py-2 ${active.row === rowIndex && active.col === colIndex
+                                                ? "border border-green-800"
+                                                : "border border-gray-100"
+                                                } `}
+
+                                            onClick={() => {
+                                                setActive({ row: rowIndex, col: colIndex })
+                                                console.log(` Row : ${rowIndex + 1} and Col : ${colIndex + 1} clicked `)
+                                            }}
+                                        />
+                                    ))}
+                                    <td className={`bg-white w-[153px] box-border border-l-2 border-r-2 border-t border-b mr-3
+                                ${active.row === rowIndex && active.col === 9 ? " border border-green-800" : "border-l-gray-200 border-r-gray-200 border-t-gray-100 border-b-gray-100"}`}
+                                        style={{
+                                            borderLeftStyle: 'dashed',
+                                            borderRightStyle: 'dashed',
+                                            borderTopStyle: 'solid',
+                                            borderBottomStyle: 'solid',
+                                        }}
+                                        onClick={() => {
+                                            setActive({ row: rowIndex, col: 9 })
+                                            console.log(` Row : ${rowIndex + 1} and Col : 10 clicked `)
+                                        }}>
+
+                                    </td>
+
+                                </tr>
+                            );
+                        })}
+
+
                     </tbody>
 
                 </table>
